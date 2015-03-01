@@ -45,10 +45,12 @@ extension NSObject {
         
         return properties.allObjects
     }
-    
-    convenience init(dictionary: NSDictionary) {
-        self.init()
-        self.fill(dictionary)
+
+    class func initWithDictionary(dictionary :NSDictionary) -> Self? {
+        var instance = self.init()
+        instance.fill(dictionary)
+        
+        return instance
     }
     
     func dictionaryRepresentation() -> NSDictionary {
