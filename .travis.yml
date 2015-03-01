@@ -1,2 +1,2 @@
 language: swift
-script: xctool -project Mapper.xcodeproj -scheme Mapper-Tests -sdk iphonesimulator build test
+script: xctool -project Mapper.xcodeproj -scheme "Mapper Tests" -sdk iphonesimulator build test
