@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "Mapper"
-  s.version = "0.1"
+  s.version = "0.2"
   s.summary = "Object mapping made easy"
   s.description = <<-DESC
                    * Object mapping made easy

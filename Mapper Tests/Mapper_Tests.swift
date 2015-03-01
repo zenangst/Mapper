@@ -15,7 +15,31 @@ class Person: NSObject {
     var children: Array<Person> = []
 }
 
+class Criminal: Person {
+    var nickname: String = ""
+}
+
+class MasterCriminal: Criminal {
+    var myth: Bool = false
+}
+
 class Mapper_Tests: XCTestCase {
+    
+    func testDeepInheritance() {
+        let subject = MasterCriminal.new();
+        subject.fill(["nickname" : "Ra's al Ghul", "myth" : true, "name" : "???"])
+        
+        XCTAssertTrue(subject.myth, "Subject is a myth")
+        XCTAssertEqual(subject.name, "???", "Name is unknown")
+        XCTAssertEqual(subject.nickname, "Ra's al Ghul", "Nickname is \"Ra's al Ghul\"")
+    }
+    
+    func testInheritance() {
+        let subject = Criminal.new();
+        subject.fill(["nickname" : "The Joker", "age" : 45])
+        
+        XCTAssertEqual(subject.age, 45, "Age should be 45")
+    }
     
     func testFillWithDictionary() {
         let subject = Person.new()
@@ -41,3 +65,5 @@ class Mapper_Tests: XCTestCase {
     }
     
 }
+
+
