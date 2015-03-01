@@ -1,5 +1,4 @@
 ##Mapper
-[![Build Status](https://img.shields.io/travis/zenangst/Mapper.svg?style=flat)](https://travis-ci.org/zenangst/Mapper)
 
 Object mapping made easy
 
