@@ -25,6 +25,13 @@ class MasterCriminal: Criminal {
 
 class Mapper_Tests: XCTestCase {
     
+    func testInitWithDictionary() {
+        let subject = Person.initWithDictionary(["name":"Alfred","age":70])!
+        
+        XCTAssertEqual(subject.age, 70, "Age is 70")
+        XCTAssertEqual(subject.name, "Alfred", "Name is Alfred")
+    }
+    
     func testDeepInheritance() {
         let subject = MasterCriminal.new();
         subject.fill(["nickname" : "Ra's al Ghul", "myth" : true, "name" : "???"])
