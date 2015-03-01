@@ -25,6 +25,10 @@ extension NSObject {
         return properties
     }
     
+    convenience init(dictionary: NSDictionary) {
+        self.init()
+    }
+    
     func dictionaryRepresentation() -> NSDictionary {
         var propertyCount: UInt32 = 0
         var propertyList = class_copyPropertyList(self.classForCoder, &propertyCount)
