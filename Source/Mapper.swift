@@ -10,23 +10,45 @@ import Foundation
 
 extension NSObject {
     
-    private func propertyNames() -> NSArray {
+    private func propertyNamesForClass(aClass: AnyClass?) -> NSArray {
         var propertyCount: UInt32 = 0
-        var propertyList = class_copyPropertyList(self.classForCoder, &propertyCount)
-        var properties: Array<AnyObject> = []
+        var propertyList = class_copyPropertyList(aClass, &propertyCount)
+        var properties: NSMutableSet = NSMutableSet.new()
         var i: UInt32
         
         for (i = 0; i < propertyCount; i++) {
             let property: objc_property_t = propertyList[Int(i)]
             let propertyName = NSString(UTF8String: property_getName(property))
-            properties.append(propertyName as! String)
+            
+            properties.addObject(propertyName as! String)
         }
         
-        return properties
+        return properties.allObjects
+    }
+    
+    private func propertyNames() -> NSArray {
+        var reference: AnyClass = self.superclass!
+        var properties = NSMutableSet.new()
+        var resolved = false
+        
+        properties.addObjectsFromArray(propertyNamesForClass(self.classForCoder) as [AnyObject])
+        
+        while resolved != true {
+            properties.addObjectsFromArray(propertyNamesForClass(reference) as [AnyObject])
+            
+            if reference.superclass() != nil {
+                reference = reference.superclass()!
+            } else {
+                resolved = true
+            }
+        }
+        
+        return properties.allObjects
     }
     
     convenience init(dictionary: NSDictionary) {
         self.init()
+        self.fill(dictionary)
     }
     
     func dictionaryRepresentation() -> NSDictionary {
