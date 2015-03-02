@@ -10,9 +10,11 @@ import UIKit
 import XCTest
 
 class Person: NSObject {
-    var name: String = ""
-    var age: Int = 0
-    var children: Array<Person> = []
+    var name :NSString = ""
+    var age :NSNumber = 0
+    var children = []
+    var attributes :NSDictionary = [:]
+    var archEnemy: AnyObject?
 }
 
 class Criminal: Person {
@@ -27,7 +29,6 @@ class Mapper_Tests: XCTestCase {
     
     func testInitWithDictionary() {
         let subject = Person.initWithDictionary(["name":"Alfred","age":70])!
-        
         XCTAssertEqual(subject.age, 70, "Age is 70")
         XCTAssertEqual(subject.name, "Alfred", "Name is Alfred")
     }
@@ -35,16 +36,13 @@ class Mapper_Tests: XCTestCase {
     func testDeepInheritance() {
         let subject = MasterCriminal.new();
         subject.fill(["nickname" : "Ra's al Ghul", "myth" : true, "name" : "???"])
-        
         XCTAssertTrue(subject.myth, "Subject is a myth")
         XCTAssertEqual(subject.name, "???", "Name is unknown")
         XCTAssertEqual(subject.nickname, "Ra's al Ghul", "Nickname is \"Ra's al Ghul\"")
     }
     
     func testInheritance() {
-        let subject = Criminal.new();
-        subject.fill(["nickname" : "The Joker", "age" : 45])
-        
+        let subject = Criminal.initWithDictionary(["nickname" : "The Joker", "age" : 45])!;
         XCTAssertEqual(subject.age, 45, "Age should be 45")
     }
     
@@ -66,9 +64,47 @@ class Mapper_Tests: XCTestCase {
         subject.name = "Bruce Wayne"
         subject.age = 55
         
-        let expectedDictionary = ["name":"Bruce Wayne", "age" : 55, "children" : []]
+        let archEnemy = MasterCriminal.new()
+        
+        let expectedDictionary = [
+            "name":"Bruce Wayne",
+            "age" : 55,
+            "children" : [],
+            "attributes":[:],
+            "archEnemy" : NSNull.new()]
         
         XCTAssertEqual(subject.dictionaryRepresentation(), expectedDictionary, "The dictionaries are the same")
+    }
+
+    func testPropertyTypes() {
+        var joker = Criminal.initWithDictionary(["name":"???", "nickname":"The Joker"])
+        var batman = Person.initWithDictionary([
+            "name":"Bruce Wayne",
+            "age" : 55,
+            "children" : [],
+            "attributes":[:],
+            "archEnemy" : NSNull.new()])!
+        
+        batman.archEnemy = joker
+        
+        let propertyTypes = batman.propertyTypes()
+        
+        XCTAssertEqual(propertyTypes["name"] as! String, "NSString")
+        XCTAssertEqual(propertyTypes["age"] as! String, "NSNumber")
+        XCTAssertEqual(propertyTypes["children"] as! String, "NSArray")
+        XCTAssertEqual(propertyTypes["attributes"] as! String, "NSDictionary")
+        XCTAssertEqual(propertyTypes["archEnemy"] as! String, "@")
+    }
+    
+    func testTypeSafety() {
+        var batman = Person.initWithDictionary([
+            "name":"Bruce Wayne",
+            "age" : 55,
+            "children" : [],
+            "attributes":[:],
+            "archEnemy" : NSNull.new()])!
+        
+        batman.fill(["name":[]])
     }
     
 }
