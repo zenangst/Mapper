@@ -116,9 +116,10 @@ public extension NSObject {
         for (key, value) in dictionary {
             if propertyNames.containsObject(key),
                 let typeString = propertyTypes["\(key)"]! as? String {
-                    if typeString == NSStringFromClass(value.classForCoder) ||
-                        typeString == "@" {
-                        self.setValue(value, forKey: key as! String)
+                    if (typeString == NSStringFromClass(value.classForCoder) ||
+                        typeString == "@") &&
+                        !value.isKindOfClass(NSNull.classForCoder()) {
+                            self.setValue(value, forKey: key as! String)
                     }
             }
         }
