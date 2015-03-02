@@ -67,8 +67,6 @@ public extension NSObject {
             }
             
             propertyTypes["\(propertyName!)"] = "\(propertyType!)"
-            
-//            propertyTypes.addObject(["\(propertyName!)":"\(propertyType!)"])
         }
         
         return propertyTypes.copy() as! NSDictionary
