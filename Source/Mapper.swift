@@ -49,7 +49,6 @@ public extension NSObject {
             let property: objc_property_t = propertyList[Int(i)]
             let propertyName = NSString(UTF8String: property_getName(property))
             let propertyAttributes = NSString(UTF8String: property_getAttributes(property))
-            
             var propertyType = NSString(UTF8String: property_copyAttributeValue(property, "T"))
             
             if propertyType?.length > 1 {
