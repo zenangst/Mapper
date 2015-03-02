@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension NSObject {
+public extension NSObject {
     
     private func propertyNamesForClass(aClass: AnyClass?) -> NSArray {
         var propertyCount: UInt32 = 0
