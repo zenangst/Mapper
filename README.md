@@ -14,8 +14,13 @@ let subject = Person.new()
 subject.fill(["name":"Batman", "age":55])
 ```
 
-If you want to get a dictionary representation of your object, we got you covered
+Like that wasn't easy enough, Mapper also adds a method to initialise objects using a dictionary.
 
+```swift
+let subject = Person.initWithDictionary(["name":"Batman", "age":55])
+```
+
+Mapper can also serve up a dictionary representation of any object that you throw at it.
 ``` swift
 let objectDictionary: NSDictionary = subject.dictionaryRepresentation()
 ```
