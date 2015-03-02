@@ -10,9 +10,11 @@ import UIKit
 import XCTest
 
 class Person: NSObject {
-    var name: String = ""
-    var age: Int = 0
-    var children: Array<Person> = []
+    var name :NSString = ""
+    var age :NSNumber = 0
+    var children = []
+    var attributes :NSDictionary = [:]
+    var archEnemy: AnyObject?
 }
 
 class Criminal: Person {
@@ -66,9 +68,36 @@ class Mapper_Tests: XCTestCase {
         subject.name = "Bruce Wayne"
         subject.age = 55
         
-        let expectedDictionary = ["name":"Bruce Wayne", "age" : 55, "children" : []]
+        let archEnemy = MasterCriminal.new()
+        
+        let expectedDictionary = [
+            "name":"Bruce Wayne",
+            "age" : 55,
+            "children" : [],
+            "attributes":[:],
+            "archEnemy" : NSNull.new()]
         
         XCTAssertEqual(subject.dictionaryRepresentation(), expectedDictionary, "The dictionaries are the same")
+    }
+
+    func testPropertyTypes() {
+        var joker = Criminal.initWithDictionary(["name":"???", "nickname":"The Joker"])
+        var batman = Person.initWithDictionary([
+            "name":"Bruce Wayne",
+            "age" : 55,
+            "children" : [],
+            "attributes":[:],
+            "archEnemy" : NSNull.new()])!
+        
+        batman.archEnemy = joker
+        
+        let propertyTypes = batman.propertyTypes()
+        
+        XCTAssertEqual(propertyTypes["name"] as! String, "NSString")
+        XCTAssertEqual(propertyTypes["age"] as! String, "NSNumber")
+        XCTAssertEqual(propertyTypes["children"] as! String, "NSArray")
+        XCTAssertEqual(propertyTypes["attributes"] as! String, "NSDictionary")
+        XCTAssertEqual(propertyTypes["archEnemy"] as! String, "@")
     }
     
 }
