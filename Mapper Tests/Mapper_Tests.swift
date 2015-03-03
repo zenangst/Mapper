@@ -10,8 +10,8 @@ import UIKit
 import XCTest
 
 class Person: NSObject {
-    var name :NSString = ""
-    var age :NSNumber = 0
+    var name  = ""
+    var age = 0
     var children = []
     var attributes :NSDictionary = [:]
     var archEnemy: AnyObject?
@@ -89,11 +89,11 @@ class Mapper_Tests: XCTestCase {
         
         let propertyTypes = batman.propertyTypes()
         
-        XCTAssertEqual(propertyTypes["name"] as! String, "NSString")
-        XCTAssertEqual(propertyTypes["age"] as! String, "NSNumber")
+        XCTAssertEqual(propertyTypes["name"] as! String, "Swift.String")
+        XCTAssertEqual(propertyTypes["age"] as! String, "__NSCFNumber")
         XCTAssertEqual(propertyTypes["children"] as! String, "NSArray")
         XCTAssertEqual(propertyTypes["attributes"] as! String, "NSDictionary")
-        XCTAssertEqual(propertyTypes["archEnemy"] as! String, "@")
+        XCTAssertEqual(propertyTypes["archEnemy"] as! String, "Mapper_Tests.Criminal")
     }
     
     func testTypeSafety() {
