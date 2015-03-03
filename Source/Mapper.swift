@@ -35,7 +35,7 @@ public extension NSObject {
             properties.addObjectsFromArray(propertyNamesForClass(reference) as [AnyObject])
             reference = reference.superclass()!
         }
-        
+
         return properties.allObjects
     }
     
@@ -44,7 +44,7 @@ public extension NSObject {
         let propertyList = class_copyPropertyList(aClass, &propertyCount)
         let propertyTypes = NSMutableDictionary.new()
         let cleanupSet = NSCharacterSet.init(charactersInString: "\"@(){}")
-        
+
         for (var i: UInt32 = 0; i < propertyCount; i++) {
             let property: objc_property_t = propertyList[Int(i)]
             let propertyName = NSString(UTF8String: property_getName(property))
@@ -61,7 +61,7 @@ public extension NSObject {
             
             propertyTypes["\(propertyName!)"] = "\(propertyType!)"
         }
-        
+
         return propertyTypes.copy() as! Dictionary
     }
     
