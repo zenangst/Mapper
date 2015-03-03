@@ -29,7 +29,7 @@ public extension NSObject {
         var reference: AnyClass = self.superclass!
         let properties = NSMutableSet.new()
         
-        properties.addObjectsFromArray(propertyNamesForClass(self.classForCoder) as [AnyObject])
+        properties.addObjectsFromArray(propertyNamesForClass(self.mirrorClass()!) as [AnyObject])
         
         while reference.superclass() != nil {
             properties.addObjectsFromArray(propertyNamesForClass(reference) as [AnyObject])
@@ -44,7 +44,7 @@ public extension NSObject {
         let propertyList = class_copyPropertyList(aClass, &propertyCount)
         let propertyTypes = NSMutableDictionary.new()
         let cleanupSet = NSCharacterSet.init(charactersInString: "\"@(){}")
-
+        
         for (var i: UInt32 = 0; i < propertyCount; i++) {
             let property: objc_property_t = propertyList[Int(i)]
             let propertyName = NSString(UTF8String: property_getName(property))
@@ -69,11 +69,13 @@ public extension NSObject {
         
         return propertyTypes.copy() as! Dictionary
     }
-
+    
     func propertyTypes() -> NSDictionary {
+        var aClass: AnyClass = self.mirrorClass()!
+        
         var reference: AnyClass = self.superclass!
         let mutableDictionary = NSMutableDictionary.new()
-        mutableDictionary.addEntriesFromDictionary(propertyTypesForClass(self.classForCoder))
+        mutableDictionary.addEntriesFromDictionary(propertyTypesForClass(self.mirrorClass()!))
         
         while reference.superclass() != nil {
             mutableDictionary.addEntriesFromDictionary(propertyTypesForClass(reference))
@@ -82,14 +84,24 @@ public extension NSObject {
         
         return mutableDictionary.copy() as! NSDictionary
     }
-
+    
     class func initWithDictionary(dictionary :NSDictionary) -> Self? {
         return self.init().fill(dictionary)
     }
     
+    private func mirrorClass() -> AnyClass? {
+        return NSClassFromString(reflect(self).summary)
+    }
+    
     func dictionaryRepresentation() -> NSDictionary {
+        var aClass: AnyClass = self.classForCoder
+        
+        if let craftClass: AnyClass = self.mirrorClass() {
+            aClass = craftClass
+        }
+        
         var propertyCount: UInt32 = 0
-        var propertyList = class_copyPropertyList(self.classForCoder, &propertyCount)
+        var propertyList = class_copyPropertyList(aClass, &propertyCount)
         var properties: NSMutableDictionary = NSMutableDictionary.new()
         var i: UInt32
         
