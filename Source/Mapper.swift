@@ -80,8 +80,8 @@ public extension NSObject {
         return mutableDictionary.copy() as! NSDictionary
     }
     
-    class func initWithDictionary(dictionary :NSDictionary) -> Self? {
-        return self.init().fill(dictionary)
+    class func initWithDictionary(dictionary :NSDictionary, dateFormat: DateFormat? = .ISO8601) -> Self? {
+        return self.init().fill(dictionary, dateFormat: dateFormat)
     }
     
     private func mirrorClass() -> AnyClass? {
