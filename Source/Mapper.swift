@@ -128,7 +128,7 @@ public extension NSObject {
                     } else if typeString == "NSDate" &&
                         "Swift.String" == "\(reflect(value).valueType)" {
                             var date = NSDate(fromString: value as! String, format: dateFormat!)
-                            self.setValue(value, forKey: key as! String)
+                            self.setValue(date, forKey: key as! String)
                     }
             }
         }
