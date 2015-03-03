@@ -128,9 +128,14 @@ public extension NSObject {
                     } else if typeString == "NSDate" &&
                         "Swift.String" == "\(reflect(value).valueType)" {
                             let dateFormatter = NSDateFormatter()
-                            dateFormatter.dateFormat = "YYYY-MM-DD HH:mm:ss zzzz"
                             if let date = dateFormatter.dateFromString("\(value)") {
                                 self.setValue(date, forKey: key as! String)
+                            } else {
+                                dateFormatter.dateFormat = "YYYY-MM-DD HH:mm:ss zzzz"
+                                if let date = dateFormatter.dateFromString("\(value)") {
+                                    self.setValue(date, forKey: key as! String)
+                                }
+
                             }
                     }
             }
