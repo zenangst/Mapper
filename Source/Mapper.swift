@@ -80,8 +80,8 @@ public extension NSObject {
         return mutableDictionary.copy() as! NSDictionary
     }
     
-    class func initWithDictionary(dictionary :NSDictionary) -> Self? {
-        return self.init().fill(dictionary)
+    class func initWithDictionary(dictionary :NSDictionary, dateFormat: DateFormat? = .ISO8601) -> Self? {
+        return self.init().fill(dictionary, dateFormat: dateFormat)
     }
     
     private func mirrorClass() -> AnyClass? {
@@ -116,7 +116,7 @@ public extension NSObject {
         return properties.copy() as! NSDictionary
     }
     
-    func fill(dictionary: NSDictionary) -> Self? {
+    func fill(dictionary: NSDictionary, dateFormat: DateFormat? = .ISO8601) -> Self? {
         let propertyNames = self.propertyNames()
         let propertyTypes = self.propertyTypes()
         
@@ -127,11 +127,8 @@ public extension NSObject {
                         self.setValue(value, forKey: key as! String)
                     } else if typeString == "NSDate" &&
                         "Swift.String" == "\(reflect(value).valueType)" {
-                            let dateFormatter = NSDateFormatter()
-                            dateFormatter.dateFormat = "YYYY-MM-DD HH:mm:ss zzzz"
-                            if let date = dateFormatter.dateFromString("\(value)") {
-                                self.setValue(date, forKey: key as! String)
-                            }
+                            var date = NSDate(fromString: value as! String, format: dateFormat!)
+                            self.setValue(value, forKey: key as! String)
                     }
             }
         }
