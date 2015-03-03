@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD951C091AA5D54A0002DCDB /* Dater.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD951C081AA5D54A0002DCDB /* Dater.swift */; };
 		BDA5C3F51AA3598C002518A7 /* Mapper_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5C3F41AA3598C002518A7 /* Mapper_Tests.swift */; };
 		BDA5C3FB1AA359BA002518A7 /* Mapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5C3FA1AA359BA002518A7 /* Mapper.swift */; };
 		BDA5C3FD1AA35CFD002518A7 /* Mapper.podspec in Resources */ = {isa = PBXBuildFile; fileRef = BDA5C3FC1AA35CFD002518A7 /* Mapper.podspec */; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BD951C081AA5D54A0002DCDB /* Dater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dater.swift; sourceTree = "<group>"; };
 		BDA5C3EF1AA3598C002518A7 /* Mapper Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mapper Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDA5C3F31AA3598C002518A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BDA5C3F41AA3598C002518A7 /* Mapper_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mapper_Tests.swift; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				BDA5C3FA1AA359BA002518A7 /* Mapper.swift */,
+				BD951C081AA5D54A0002DCDB /* Dater.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -145,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDA5C3FB1AA359BA002518A7 /* Mapper.swift in Sources */,
+				BD951C091AA5D54A0002DCDB /* Dater.swift in Sources */,
 				BDA5C3F51AA3598C002518A7 /* Mapper_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,6 +280,7 @@
 				BDA5C3F71AA3598C002518A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
