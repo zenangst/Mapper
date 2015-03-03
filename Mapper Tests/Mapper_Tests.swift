@@ -19,6 +19,7 @@ class Person: NSObject {
 
 class Criminal: Person {
     var nickname: String = ""
+    var lastSentencing = NSDate(timeIntervalSince1970: 1)
 }
 
 class MasterCriminal: Criminal {
@@ -77,7 +78,10 @@ class Mapper_Tests: XCTestCase {
     }
 
     func testPropertyTypes() {
-        var joker = Criminal.initWithDictionary(["name":"???", "nickname":"The Joker"])
+        var joker = Criminal.initWithDictionary([
+            "name":"???",
+            "nickname":"The Joker",
+            "lastSentencing": "2015-03-03 09:02:25 +0000"])
         var batman = Person.initWithDictionary([
             "name":"Bruce Wayne",
             "age" : 55,
