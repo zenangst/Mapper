@@ -51,6 +51,10 @@ public extension NSObject {
             let propertyAttributes = NSString(UTF8String: property_getAttributes(property))
             var propertyType = NSString(UTF8String: property_copyAttributeValue(property, "T"))
             
+            var propertyValue: AnyObject? = self.valueForKey(propertyName as! String)
+            
+            
+            
             if propertyType?.length > 1 {
                 var cleanType: AnyObject = propertyType!.componentsSeparatedByCharactersInSet(cleanupSet)
                 propertyType = cleanType.componentsJoinedByString("")
