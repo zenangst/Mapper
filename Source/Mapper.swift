@@ -50,22 +50,13 @@ public extension NSObject {
             let propertyName = NSString(UTF8String: property_getName(property))
             let propertyAttributes = NSString(UTF8String: property_getAttributes(property))
             var propertyType = NSString(UTF8String: property_copyAttributeValue(property, "T"))
-            
             var propertyValue: AnyObject? = self.valueForKey(propertyName as! String)
-            
-            
-            
+
             if propertyType?.length > 1 {
                 var cleanType: AnyObject = propertyType!.componentsSeparatedByCharactersInSet(cleanupSet)
                 propertyType = cleanType.componentsJoinedByString("")
-            } else {
-                switch propertyType as! String {
-                case "B":
-                    propertyType = "NSNumber"
-                    break
-                default:
-                    break
-                }
+            } else if propertyValue != nil  {
+                propertyType = "\(reflect(propertyValue!).valueType)"
             }
             
             propertyTypes["\(propertyName!)"] = "\(propertyType!)"
@@ -132,7 +123,7 @@ public extension NSObject {
         for (key, value) in dictionary {
             if propertyNames.containsObject(key),
                 let typeString = propertyTypes["\(key)"]! as? String {
-                    if (typeString == NSStringFromClass(value.classForCoder) ||
+                    if (typeString == "\(reflect(value).valueType)" ||
                         typeString == "@") &&
                         !value.isKindOfClass(NSNull.classForCoder()) {
                             self.setValue(value, forKey: key as! String)
