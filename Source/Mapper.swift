@@ -88,7 +88,7 @@ public extension NSObject {
         return NSClassFromString(reflect(self).summary)
     }
     
-    func dictionaryRepresentation() -> NSDictionary {
+    func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
         var aClass: AnyClass = self.classForCoder
         
         if let craftClass: AnyClass = self.mirrorClass() {
@@ -113,7 +113,7 @@ public extension NSObject {
             }
         }
         
-        return properties.copy() as! NSDictionary
+        return properties.copy() as! Dictionary<String, AnyObject>
     }
     
     func fill(dictionary: NSDictionary, dateFormat: DateFormat? = .ISO8601) -> Self? {
