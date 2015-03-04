@@ -30,13 +30,14 @@ class Mapper_Tests: XCTestCase {
     
     func testInitWithDictionary() {
         let subject = Person.initWithDictionary(["name":"Alfred","age":70])!
+
         XCTAssertEqual(subject.age, 70, "Age is 70")
         XCTAssertEqual(subject.name, "Alfred", "Name is Alfred")
     }
     
     func testDeepInheritance() {
         let subject = MasterCriminal.new();
-        subject.fill(["nickname" : "Ra's al Ghul", "myth" : true, "name" : "???"])
+        subject.fill(with: ["nickname" : "Ra's al Ghul", "myth" : true, "name" : "???"])
         XCTAssertTrue(subject.myth, "Subject is a myth")
         XCTAssertEqual(subject.name, "???", "Name is unknown")
         XCTAssertEqual(subject.nickname, "Ra's al Ghul", "Nickname is \"Ra's al Ghul\"")
@@ -54,7 +55,7 @@ class Mapper_Tests: XCTestCase {
         XCTAssertEqual(subject.name, "Bruce Wayne", "Name is Bruce Wayne")
         XCTAssertEqual(subject.age, 55, "Bruce Wayne is 55 years old")
         
-        subject.fill(["name":"Batman", "age":0])
+        subject.fill(with: ["name":"Batman", "age":0])
         XCTAssertNotEqual(subject.name, "Bruce Wayne", "Name is not Bruce Wayne")
         XCTAssertEqual(subject.name, "Batman", "Name is Batman")
         XCTAssertEqual(subject.age, 0, "Batmans age is unknown")
@@ -108,7 +109,7 @@ class Mapper_Tests: XCTestCase {
             "attributes":[:],
             "archEnemy" : NSNull.new()])!
         
-        batman.fill(["name":[]])
+        batman.fill(with: ["name":[]])
     }
     
 }
