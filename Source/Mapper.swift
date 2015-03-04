@@ -81,7 +81,7 @@ public extension NSObject {
     }
     
     class func initWithDictionary(dictionary :NSDictionary, dateFormat: DateFormat? = .ISO8601) -> Self? {
-        return self.init().fill(dictionary, dateFormat: dateFormat)
+        return self.init().fill(with: dictionary, dateFormat: dateFormat)
     }
     
     private func mirrorClass() -> AnyClass? {
@@ -116,7 +116,7 @@ public extension NSObject {
         return properties.copy() as! NSDictionary
     }
     
-    func fill(dictionary: NSDictionary, dateFormat: DateFormat? = .ISO8601) -> Self? {
+    func fill(with dictionary: NSDictionary, dateFormat: DateFormat? = .ISO8601) -> Self? {
         let propertyNames = self.propertyNames()
         let propertyTypes = self.propertyTypes()
         
