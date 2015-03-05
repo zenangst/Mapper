@@ -67,14 +67,16 @@ class Mapper_Tests: XCTestCase {
         
         let archEnemy = MasterCriminal.new()
         
-        let expectedDictionary = [
+        let expectedDictionary: Dictionary<String,AnyObject> = [
             "name":"Bruce Wayne",
             "age" : 55,
             "children" : [],
             "attributes":[:],
             "archEnemy" : NSNull.new()]
-        
-        XCTAssertEqual(subject.dictionaryRepresentation(), expectedDictionary, "The dictionaries are the same")
+
+        let userDictionary = subject.dictionaryRepresentation()
+
+        XCTAssertEqual(expectedDictionary as NSDictionary!, userDictionary as NSDictionary!)
     }
 
     func testPropertyTypes() {
