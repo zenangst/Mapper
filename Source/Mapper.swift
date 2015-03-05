@@ -80,6 +80,11 @@ public extension NSObject {
         return mutableDictionary.copy() as! NSDictionary
     }
 
+    convenience init(dictionary :Dictionary<String, AnyObject>, dateFormat: DateFormat? = .ISO8601) {
+        self.init()
+        self.fill(dictionary, dateFormat: dateFormat)
+    }
+
     class func initWithDictionary(dictionary :Dictionary<String, AnyObject>, dateFormat: DateFormat? = .ISO8601) -> Self? {
         return self.init().fill(dictionary, dateFormat: dateFormat)
     }
