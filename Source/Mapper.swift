@@ -6,7 +6,31 @@
 //
 //
 
-import Foundation
+import UIKit
+
+public extension UIView {
+
+    func mapInterface(object: AnyObject) {
+        let objectDictionary: Dictionary<String, AnyObject> = object.dictionaryRepresentation()
+        let interfaceDictionary: Dictionary<String, AnyObject> = self.dictionaryRepresentation()
+        let propertyTypes = self.propertyTypes()
+
+        for (key, value) in interfaceDictionary {
+            if !value.isKindOfClass(object.classForCoder) {
+                for (objectKey, objectValue) in objectDictionary {
+                    if key.hasPrefix(objectKey) {
+                        switch propertyTypes[key] as! String {
+                        case "UILabel": (value as! UILabel).text = objectValue as? String
+                        default: break
+                        }
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+}
 
 public extension NSObject {
 
