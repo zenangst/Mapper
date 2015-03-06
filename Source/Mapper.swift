@@ -50,16 +50,19 @@ public extension NSObject {
             let propertyName = NSString(UTF8String: property_getName(property))
             let propertyAttributes = NSString(UTF8String: property_getAttributes(property))
             var propertyType = NSString(UTF8String: property_copyAttributeValue(property, "T"))
-            var propertyValue: AnyObject? = self.valueForKey(propertyName as! String)
 
-            if propertyType?.length > 1 {
-                var cleanType: AnyObject = propertyType!.componentsSeparatedByCharactersInSet(cleanupSet)
-                propertyType = cleanType.componentsJoinedByString("")
-            } else if propertyValue != nil  {
-                propertyType = "\(reflect(propertyValue!).valueType)"
+            if self.respondsToSelector(NSSelectorFromString(propertyName as! String)) {
+                var propertyValue: AnyObject? = self.valueForKey(propertyName as! String)
+
+                if propertyType?.length > 1 {
+                    var cleanType: AnyObject = propertyType!.componentsSeparatedByCharactersInSet(cleanupSet)
+                    propertyType = cleanType.componentsJoinedByString("")
+                } else if propertyValue != nil  {
+                    propertyType = "\(reflect(propertyValue!).valueType)"
+                }
+
+                propertyTypes["\(propertyName!)"] = "\(propertyType!)"
             }
-
-            propertyTypes["\(propertyName!)"] = "\(propertyType!)"
         }
 
         return propertyTypes.copy() as! Dictionary
