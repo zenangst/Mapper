@@ -92,7 +92,7 @@ public extension NSObject {
         return propertyTypes.copy() as! Dictionary
     }
 
-    func propertyTypes() -> NSDictionary {
+    public func propertyTypes() -> NSDictionary {
         var aClass: AnyClass = self.mirrorClass()!
 
         var reference: AnyClass = self.superclass!
@@ -120,7 +120,7 @@ public extension NSObject {
         return NSClassFromString(reflect(self).summary)
     }
 
-    func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
+    public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
         var aClass: AnyClass = self.classForCoder
 
         if let craftClass: AnyClass = self.mirrorClass() {
@@ -148,7 +148,7 @@ public extension NSObject {
         return properties.copy() as! Dictionary<String, AnyObject>
     }
 
-    func fill(dictionary: Dictionary<String, AnyObject>, dateFormat: DateFormat? = .ISO8601) -> Self? {
+    public func fill(dictionary: Dictionary<String, AnyObject>, dateFormat: DateFormat? = .ISO8601) -> Self? {
         let propertyNames = self.propertyNames()
         let propertyTypes = self.propertyTypes()
 
