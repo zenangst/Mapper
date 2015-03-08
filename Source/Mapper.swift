@@ -16,7 +16,8 @@ public extension UIView {
         let propertyTypes = self.propertyTypes()
 
         for (key, value) in interfaceDictionary {
-            if !value.isKindOfClass(object.classForCoder) {
+            if !value.isKindOfClass(object.classForCoder) &&
+               !value.isKindOfClass(NSNull.classForCoder()) {
                 for (objectKey, objectValue) in objectDictionary {
                     if key.hasPrefix(objectKey) {
                         switch propertyTypes[key] as! String {
@@ -29,7 +30,6 @@ public extension UIView {
             }
         }
     }
-
 }
 
 public extension NSObject {
