@@ -122,26 +122,28 @@ public extension NSObject {
 
     public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
         var aClass: AnyClass = self.classForCoder
-
-        if let craftClass: AnyClass = self.mirrorClass() {
-            aClass = craftClass
-        }
-
-        var propertyCount: UInt32 = 0
-        var propertyList = class_copyPropertyList(aClass, &propertyCount)
         var properties: NSMutableDictionary = NSMutableDictionary.new()
-        var i: UInt32
 
-        for (i = 0; i < propertyCount; i++) {
-            let property: objc_property_t = propertyList[Int(i)]
-            let propertyName = NSString(UTF8String: property_getName(property))
-            let propertyAttribute = NSString(UTF8String: property_getAttributes(property))
-            let propertyKey = propertyName as String!
+        if !NSObject.isKindOfClass(aClass) {
+            if let craftClass: AnyClass = self.mirrorClass() {
+                aClass = craftClass
+            }
 
-            if let propertyValue: AnyObject = self.valueForKey(propertyKey) {
-                properties[propertyKey] = propertyValue
-            } else {
-                properties[propertyKey] = NSNull.new()
+            var propertyCount: UInt32 = 0
+            var propertyList = class_copyPropertyList(aClass, &propertyCount)
+            var i: UInt32
+
+            for (i = 0; i < propertyCount; i++) {
+                let property: objc_property_t = propertyList[Int(i)]
+                let propertyName = NSString(UTF8String: property_getName(property))
+                let propertyAttribute = NSString(UTF8String: property_getAttributes(property))
+                let propertyKey = propertyName as String!
+
+                if let propertyValue: AnyObject = self.valueForKey(propertyKey) {
+                    properties[propertyKey] = propertyValue
+                } else {
+                    properties[propertyKey] = NSNull.new()
+                }
             }
         }
 
