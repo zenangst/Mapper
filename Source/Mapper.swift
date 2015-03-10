@@ -15,13 +15,17 @@ public extension UIView {
         let interfaceDictionary: Dictionary<String, AnyObject> = self.dictionaryRepresentation()
         let propertyTypes = self.propertyTypes()
 
-        for (key, value) in interfaceDictionary {
-            if !value.isKindOfClass(object.classForCoder) &&
-               !value.isKindOfClass(NSNull.classForCoder()) {
+        for (key, UIElement) in interfaceDictionary {
+            if !UIElement.isKindOfClass(object.classForCoder) &&
+               !UIElement.isKindOfClass(NSNull.classForCoder()) {
                 for (objectKey, objectValue) in objectDictionary {
                     if key.hasPrefix(objectKey) {
                         switch propertyTypes[key] as! String {
-                        case "UILabel": (value as! UILabel).text = objectValue as? String
+                        case "UIButton"   : (UIElement as! UIButton).setTitle(objectValue as? String, forState: .Application)
+                        case "UILabel"    : (UIElement as! UILabel).text = objectValue as? String
+                        case "UISlider"   : (UIElement as! UISlider).value = objectValue as! Float
+                        case "UISwitch"   : (UIElement as! UISwitch).on  = objectValue as! Bool
+                        case "UITextField": (UIElement as! UITextField).text = objectValue as? String
                         default: break
                         }
                         break
