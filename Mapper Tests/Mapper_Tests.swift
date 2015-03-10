@@ -112,6 +112,12 @@ class Mapper_Tests: XCTestCase {
         
         batman.fill(["name":[]])
     }
+
+    func testMappingNSObject() {
+        var object = NSObject.new()
+        
+        XCTAssertEqual(object.dictionaryRepresentation().count, 0)
+    }
     
 }
 
