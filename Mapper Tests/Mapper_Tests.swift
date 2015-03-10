@@ -9,6 +9,12 @@
 import UIKit
 import XCTest
 
+class Interface: UIView {
+
+    var nameLabel: UILabel?
+
+}
+
 class Person: NSObject {
     var name  = ""
     var age = 0
@@ -117,6 +123,17 @@ class Mapper_Tests: XCTestCase {
         var object = NSObject.new()
         
         XCTAssertEqual(object.dictionaryRepresentation().count, 0)
+    }
+
+    func testInterfaceMapping() {
+        var ui = Interface.new()
+        ui.nameLabel = UILabel.new()
+        var person = Person(dictionary: ["name":"Dark Knight"], dateFormat: nil)
+        XCTAssertNil(ui.nameLabel?.text)
+
+        ui.mapInterface(person)
+
+        XCTAssertNotNil(ui.nameLabel?.text!)
     }
     
 }
