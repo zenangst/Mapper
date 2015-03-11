@@ -7,10 +7,22 @@
 //
 
 import UIKit
+extension UIButton {
+    func setTitle(title: String) {
+        self.setTitle(title, forState: UIControlState.Normal)
+    }
+}
 
 public extension UIView {
 
     func fill(object: AnyObject) {
+        let UIMapping = [
+            "UIButton"    : "title",
+            "UILabel"     : "text",
+            "UISlider"    : "value",
+            "UISwitch"    : "on",
+            "UITextField" : "text",
+        ]
         let objectDictionary: Dictionary<String, AnyObject> = object.dictionaryRepresentation()
         let interfaceDictionary: Dictionary<String, AnyObject> = self.dictionaryRepresentation()
         let propertyTypes = self.propertyTypes()
@@ -20,13 +32,8 @@ public extension UIView {
                !UIElement.isKindOfClass(NSNull.classForCoder()) {
                 for (objectKey, objectValue) in objectDictionary {
                     if key.hasPrefix(objectKey) {
-                        switch propertyTypes[key] as! String {
-                        case "UIButton"   : (UIElement as! UIButton).setTitle(objectValue as? String, forState: .Application)
-                        case "UILabel"    : (UIElement as! UILabel).text = objectValue as? String
-                        case "UISlider"   : (UIElement as! UISlider).value = objectValue as! Float
-                        case "UISwitch"   : (UIElement as! UISwitch).on  = objectValue as! Bool
-                        case "UITextField": (UIElement as! UITextField).text = objectValue as? String
-                        default: break
+                        if let UIKey = UIMapping[propertyTypes[key] as! String] {
+                            UIElement.setValue(objectValue, forKey: UIKey)
                         }
                         break
                     }
