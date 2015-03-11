@@ -10,7 +10,7 @@ import UIKit
 
 public extension UIView {
 
-    func mapInterface(object: AnyObject) {
+    func map(object: AnyObject) {
         let objectDictionary: Dictionary<String, AnyObject> = object.dictionaryRepresentation()
         let interfaceDictionary: Dictionary<String, AnyObject> = self.dictionaryRepresentation()
         let propertyTypes = self.propertyTypes()
