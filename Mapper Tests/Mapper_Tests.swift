@@ -158,7 +158,7 @@ class Mapper_Tests: XCTestCase {
         XCTAssertNotNil(ui.heroSwitch?.on)
         XCTAssertNotNil(ui.nameTextField?.text)
 
-        ui.map(model)
+        ui.bind(model)
 
         XCTAssertNotNil(ui.nameLabel?.text!)
         XCTAssertNotNil(ui.infoButton?.titleForState(.Application))
