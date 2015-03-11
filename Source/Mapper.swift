@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 extension UIButton {
     func setTitle(title: String) {
         self.setTitle(title, forState: UIControlState.Normal)
