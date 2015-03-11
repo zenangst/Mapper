@@ -9,6 +9,21 @@
 import UIKit
 import XCTest
 
+class Interface: UIView {
+    var nameLabel: UILabel?
+    var infoButton: UIButton?
+    var ageSlider: UISlider?
+    var heroSwitch: UISwitch?
+    var nameTextField: UITextField?
+}
+
+class InterfaceModel: NSObject {
+    var name  = ""
+    var age = 0
+    var hero: Bool = false
+    var info: String = "some text"
+}
+
 class Person: NSObject {
     var name  = ""
     var age = 0
@@ -111,6 +126,45 @@ class Mapper_Tests: XCTestCase {
             "archEnemy" : NSNull.new()])!
         
         batman.fill(["name":[]])
+    }
+
+    func testMappingNSObject() {
+        var object = NSObject.new()
+        
+        XCTAssertEqual(object.dictionaryRepresentation().count, 0)
+    }
+
+    func testInterfaceMapping() {
+        var ui = Interface.new()
+        
+        ui.nameLabel = UILabel.new()
+        ui.infoButton = UIButton.new()
+        ui.ageSlider = UISlider.new()
+        ui.ageSlider?.maximumValue = 60.0
+
+        ui.heroSwitch = UISwitch.new()
+        ui.nameTextField = UITextField.new()
+
+        var uiModel = InterfaceModel(dictionary: [
+            "name" :"Dark Knight",
+            "age"  : 55,
+            "hero" : true,
+            "info": "infoText"
+            ])
+
+        XCTAssertNil(ui.nameLabel?.text)
+        XCTAssertNil(ui.infoButton?.titleForState(.Application))
+        XCTAssertNotNil(ui.ageSlider?.value)
+        XCTAssertNotNil(ui.heroSwitch?.on)
+        XCTAssertNotNil(ui.nameTextField?.text)
+
+        ui.map(uiModel)
+
+        XCTAssertNotNil(ui.nameLabel?.text!)
+        XCTAssertNotNil(ui.infoButton?.titleForState(.Application))
+        XCTAssertEqual(ui.ageSlider!.value, 55.0)
+        XCTAssertTrue(ui.heroSwitch!.on)
+        XCTAssertEqual(ui.nameTextField!.text, "Dark Knight")
     }
     
 }

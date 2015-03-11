@@ -6,7 +6,35 @@
 //
 //
 
-import Foundation
+import UIKit
+
+public extension UIView {
+
+    func map(object: AnyObject) {
+        let objectDictionary: Dictionary<String, AnyObject> = object.dictionaryRepresentation()
+        let interfaceDictionary: Dictionary<String, AnyObject> = self.dictionaryRepresentation()
+        let propertyTypes = self.propertyTypes()
+
+        for (key, UIElement) in interfaceDictionary {
+            if !UIElement.isKindOfClass(object.classForCoder) &&
+               !UIElement.isKindOfClass(NSNull.classForCoder()) {
+                for (objectKey, objectValue) in objectDictionary {
+                    if key.hasPrefix(objectKey) {
+                        switch propertyTypes[key] as! String {
+                        case "UIButton"   : (UIElement as! UIButton).setTitle(objectValue as? String, forState: .Application)
+                        case "UILabel"    : (UIElement as! UILabel).text = objectValue as? String
+                        case "UISlider"   : (UIElement as! UISlider).value = objectValue as! Float
+                        case "UISwitch"   : (UIElement as! UISwitch).on  = objectValue as! Bool
+                        case "UITextField": (UIElement as! UITextField).text = objectValue as? String
+                        default: break
+                        }
+                        break
+                    }
+                }
+            }
+        }
+    }
+}
 
 public extension NSObject {
 
@@ -50,22 +78,25 @@ public extension NSObject {
             let propertyName = NSString(UTF8String: property_getName(property))
             let propertyAttributes = NSString(UTF8String: property_getAttributes(property))
             var propertyType = NSString(UTF8String: property_copyAttributeValue(property, "T"))
-            var propertyValue: AnyObject? = self.valueForKey(propertyName as! String)
 
-            if propertyType?.length > 1 {
-                var cleanType: AnyObject = propertyType!.componentsSeparatedByCharactersInSet(cleanupSet)
-                propertyType = cleanType.componentsJoinedByString("")
-            } else if propertyValue != nil  {
-                propertyType = "\(reflect(propertyValue!).valueType)"
+            if self.respondsToSelector(NSSelectorFromString(propertyName as! String)) {
+                var propertyValue: AnyObject? = self.valueForKey(propertyName as! String)
+
+                if propertyType?.length > 1 {
+                    var cleanType: AnyObject = propertyType!.componentsSeparatedByCharactersInSet(cleanupSet)
+                    propertyType = cleanType.componentsJoinedByString("")
+                } else if propertyValue != nil  {
+                    propertyType = "\(reflect(propertyValue!).valueType)"
+                }
+
+                propertyTypes["\(propertyName!)"] = "\(propertyType!)"
             }
-
-            propertyTypes["\(propertyName!)"] = "\(propertyType!)"
         }
 
         return propertyTypes.copy() as! Dictionary
     }
 
-    func propertyTypes() -> NSDictionary {
+    public func propertyTypes() -> NSDictionary {
         var aClass: AnyClass = self.mirrorClass()!
 
         var reference: AnyClass = self.superclass!
@@ -93,35 +124,37 @@ public extension NSObject {
         return NSClassFromString(reflect(self).summary)
     }
 
-    func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
+    public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
         var aClass: AnyClass = self.classForCoder
-
-        if let craftClass: AnyClass = self.mirrorClass() {
-            aClass = craftClass
-        }
-
-        var propertyCount: UInt32 = 0
-        var propertyList = class_copyPropertyList(aClass, &propertyCount)
         var properties: NSMutableDictionary = NSMutableDictionary.new()
-        var i: UInt32
 
-        for (i = 0; i < propertyCount; i++) {
-            let property: objc_property_t = propertyList[Int(i)]
-            let propertyName = NSString(UTF8String: property_getName(property))
-            let propertyAttribute = NSString(UTF8String: property_getAttributes(property))
-            let propertyKey = propertyName as String!
+        if !NSObject.isKindOfClass(aClass) {
+            if let craftClass: AnyClass = self.mirrorClass() {
+                aClass = craftClass
+            }
 
-            if let propertyValue: AnyObject = self.valueForKey(propertyKey) {
-                properties[propertyKey] = propertyValue
-            } else {
-                properties[propertyKey] = NSNull.new()
+            var propertyCount: UInt32 = 0
+            var propertyList = class_copyPropertyList(aClass, &propertyCount)
+            var i: UInt32
+
+            for (i = 0; i < propertyCount; i++) {
+                let property: objc_property_t = propertyList[Int(i)]
+                let propertyName = NSString(UTF8String: property_getName(property))
+                let propertyAttribute = NSString(UTF8String: property_getAttributes(property))
+                let propertyKey = propertyName as String!
+
+                if let propertyValue: AnyObject = self.valueForKey(propertyKey) {
+                    properties[propertyKey] = propertyValue
+                } else {
+                    properties[propertyKey] = NSNull.new()
+                }
             }
         }
 
         return properties.copy() as! Dictionary<String, AnyObject>
     }
 
-    func fill(dictionary: Dictionary<String, AnyObject>, dateFormat: DateFormat? = .ISO8601) -> Self? {
+    public func fill(dictionary: Dictionary<String, AnyObject>, dateFormat: DateFormat? = .ISO8601) -> Self? {
         let propertyNames = self.propertyNames()
         let propertyTypes = self.propertyTypes()
 
