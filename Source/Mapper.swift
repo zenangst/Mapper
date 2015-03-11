@@ -43,7 +43,7 @@ public extension NSObject {
         let propertyList = class_copyPropertyList(aClass, &propertyCount)
         let properties = NSMutableSet.new()
 
-        for (var i: UInt32 = 0; i < propertyCount; i++) {
+        for i in 0..<propertyCount {
             let property: objc_property_t = propertyList[Int(i)]
             let propertyName = NSString(UTF8String: property_getName(property))
 
@@ -73,7 +73,7 @@ public extension NSObject {
         let propertyTypes = NSMutableDictionary.new()
         let cleanupSet = NSCharacterSet.init(charactersInString: "\"@(){}")
 
-        for (var i: UInt32 = 0; i < propertyCount; i++) {
+        for i in 0..<propertyCount {
             let property: objc_property_t = propertyList[Int(i)]
             let propertyName = NSString(UTF8String: property_getName(property))
             let propertyAttributes = NSString(UTF8String: property_getAttributes(property))
@@ -137,7 +137,7 @@ public extension NSObject {
             var propertyList = class_copyPropertyList(aClass, &propertyCount)
             var i: UInt32
 
-            for (i = 0; i < propertyCount; i++) {
+            for i in 0..<propertyCount {
                 let property: objc_property_t = propertyList[Int(i)]
                 let propertyName = NSString(UTF8String: property_getName(property))
                 let propertyAttribute = NSString(UTF8String: property_getAttributes(property))
