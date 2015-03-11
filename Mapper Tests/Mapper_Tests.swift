@@ -145,7 +145,7 @@ class Mapper_Tests: XCTestCase {
         ui.heroSwitch = UISwitch.new()
         ui.nameTextField = UITextField.new()
 
-        var uiModel = InterfaceModel(dictionary: [
+        var model = InterfaceModel(dictionary: [
             "name" :"Dark Knight",
             "age"  : 55,
             "hero" : true,
@@ -158,7 +158,7 @@ class Mapper_Tests: XCTestCase {
         XCTAssertNotNil(ui.heroSwitch?.on)
         XCTAssertNotNil(ui.nameTextField?.text)
 
-        ui.map(uiModel)
+        ui.fill(model)
 
         XCTAssertNotNil(ui.nameLabel?.text!)
         XCTAssertNotNil(ui.infoButton?.titleForState(.Application))
