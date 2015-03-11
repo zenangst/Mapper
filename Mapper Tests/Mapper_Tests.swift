@@ -11,7 +11,7 @@ import XCTest
 
 class Interface: UIView {
     var nameLabel: UILabel?
-    var button: UIButton?
+    var infoButton: UIButton?
     var ageSlider: UISlider?
     var heroSwitch: UISwitch?
     var nameTextField: UITextField?
@@ -21,7 +21,7 @@ class InterfaceModel: NSObject {
     var name  = ""
     var age = 0
     var hero: Bool = false
-    var buttonText: String = "buttonText"
+    var info: String = "some text"
 }
 
 class Person: NSObject {
@@ -138,7 +138,7 @@ class Mapper_Tests: XCTestCase {
         var ui = Interface.new()
         
         ui.nameLabel = UILabel.new()
-        ui.button = UIButton.new()
+        ui.infoButton = UIButton.new()
         ui.ageSlider = UISlider.new()
         ui.ageSlider?.maximumValue = 60.0
 
@@ -148,18 +148,20 @@ class Mapper_Tests: XCTestCase {
         var uiModel = InterfaceModel(dictionary: [
             "name" :"Dark Knight",
             "age"  : 55,
-            "hero" : true
+            "hero" : true,
+            "info": "infoText"
             ])
 
         XCTAssertNil(ui.nameLabel?.text)
-        XCTAssertNil(ui.button?.titleForState(.Application))
+        XCTAssertNil(ui.infoButton?.titleForState(.Application))
         XCTAssertNotNil(ui.ageSlider?.value)
         XCTAssertNotNil(ui.heroSwitch?.on)
         XCTAssertNotNil(ui.nameTextField?.text)
 
-        ui.mapInterface(uiModel)
+        ui.map(uiModel)
 
         XCTAssertNotNil(ui.nameLabel?.text!)
+        XCTAssertNotNil(ui.infoButton?.titleForState(.Application))
         XCTAssertEqual(ui.ageSlider!.value, 55.0)
         XCTAssertTrue(ui.heroSwitch!.on)
         XCTAssertEqual(ui.nameTextField!.text, "Dark Knight")
