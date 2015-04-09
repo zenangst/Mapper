@@ -33,7 +33,7 @@ public extension UIView {
                !UIElement.isKindOfClass(NSNull.classForCoder()) {
                 for (objectKey, objectValue) in objectDictionary {
                     if key.hasPrefix(objectKey) {
-                        if let UIKey = UIMapping[propertyTypes[key] as String] {
+                        if let UIKey = UIMapping[propertyTypes[key] as! String] {
                             UIElement.setValue(objectValue, forKey: UIKey)
                         }
                         break
@@ -49,13 +49,13 @@ public extension NSObject {
     private func propertyNamesForClass(aClass: AnyClass?) -> NSArray {
         var propertyCount: UInt32 = 0
         let propertyList = class_copyPropertyList(aClass, &propertyCount)
-        let properties = NSMutableSet()
+        let properties = NSMutableSet.new()
 
         for i in 0..<propertyCount {
             let property: objc_property_t = propertyList[Int(i)]
             let propertyName = NSString(UTF8String: property_getName(property))
 
-            properties.addObject(propertyName as String)
+            properties.addObject(propertyName as! String)
         }
 
         return properties.allObjects
@@ -63,7 +63,7 @@ public extension NSObject {
 
     private func propertyNames() -> NSArray {
         var reference: AnyClass = self.superclass!
-        let properties = NSMutableSet()
+        let properties = NSMutableSet.new()
 
         properties.addObjectsFromArray(propertyNamesForClass(self.mirrorClass()!) as [AnyObject])
 
@@ -78,7 +78,7 @@ public extension NSObject {
     private func propertyTypesForClass(aClass: AnyClass?) -> Dictionary<String, String> {
         var propertyCount: UInt32 = 0
         let propertyList = class_copyPropertyList(aClass, &propertyCount)
-        let propertyTypes = NSMutableDictionary()
+        let propertyTypes = NSMutableDictionary.new()
         let cleanupSet = NSCharacterSet.init(charactersInString: "\"@(){}")
 
         for i in 0..<propertyCount {
@@ -87,8 +87,8 @@ public extension NSObject {
             let propertyAttributes = NSString(UTF8String: property_getAttributes(property))
             var propertyType = NSString(UTF8String: property_copyAttributeValue(property, "T"))
 
-            if self.respondsToSelector(NSSelectorFromString(propertyName as String)) {
-                var propertyValue: AnyObject? = self.valueForKey(propertyName as String)
+            if self.respondsToSelector(NSSelectorFromString(propertyName as! String)) {
+                var propertyValue: AnyObject? = self.valueForKey(propertyName as! String)
 
                 if propertyType?.length > 1 {
                     var cleanType: AnyObject = propertyType!.componentsSeparatedByCharactersInSet(cleanupSet)
@@ -101,14 +101,14 @@ public extension NSObject {
             }
         }
 
-        return propertyTypes.copy() as Dictionary
+        return propertyTypes.copy() as! Dictionary
     }
 
     public func propertyTypes() -> NSDictionary {
         var aClass: AnyClass = self.mirrorClass()!
 
         var reference: AnyClass = self.superclass!
-        let mutableDictionary = NSMutableDictionary()
+        let mutableDictionary = NSMutableDictionary.new()
         mutableDictionary.addEntriesFromDictionary(propertyTypesForClass(self.mirrorClass()!))
 
         while reference.superclass() != nil {
@@ -116,7 +116,7 @@ public extension NSObject {
             reference = reference.superclass()!
         }
 
-        return mutableDictionary.copy() as NSDictionary
+        return mutableDictionary.copy() as! NSDictionary
     }
 
     convenience init(dictionary :Dictionary<String, AnyObject>, dateFormat: DateFormat? = .ISO8601) {
@@ -134,7 +134,7 @@ public extension NSObject {
 
     public func dictionaryRepresentation() -> Dictionary<String, AnyObject> {
         var aClass: AnyClass = self.classForCoder
-        var properties: NSMutableDictionary = NSMutableDictionary()
+        var properties: NSMutableDictionary = NSMutableDictionary.new()
 
         if !NSObject.isKindOfClass(aClass) {
             if let craftClass: AnyClass = self.mirrorClass() {
@@ -154,12 +154,12 @@ public extension NSObject {
                 if let propertyValue: AnyObject = self.valueForKey(propertyKey) {
                     properties[propertyKey] = propertyValue
                 } else {
-                    properties[propertyKey] = NSNull()
+                    properties[propertyKey] = NSNull.new()
                 }
             }
         }
 
-        return properties.copy() as Dictionary<String, AnyObject>
+        return properties.copy() as! Dictionary<String, AnyObject>
     }
 
     public func fill(dictionary: Dictionary<String, AnyObject>, dateFormat: DateFormat? = .ISO8601) -> Self? {
@@ -167,16 +167,15 @@ public extension NSObject {
         let propertyTypes = self.propertyTypes()
 
         for (key, value) in dictionary {
-            if propertyNames.containsObject(key) {
-               if let typeString = propertyTypes["\(key)"]! as? String {
+            if propertyNames.containsObject(key),
+                let typeString = propertyTypes["\(key)"]! as? String {
                     if typeString == "\(reflect(value).valueType)" {
                         self.setValue(value, forKey: key)
                     } else if typeString == "NSDate" &&
                         "Swift.String" == "\(reflect(value).valueType)" {
-                            var date = NSDate(fromString: value as String, format: dateFormat!)
+                            var date = NSDate(fromString: value as! String, format: dateFormat!)
                             self.setValue(date, forKey: key)
                     }
-                }
             }
         }
 

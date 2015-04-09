@@ -451,32 +451,32 @@ extension NSDate {
 
     func weekdayToString() -> String {
         let formatter = NSDateFormatter()
-        return formatter.weekdaySymbols[self.weekday()-1] as String
+        return formatter.weekdaySymbols[self.weekday()-1] as! String
     }
 
     func shortWeekdayToString() -> String {
         let formatter = NSDateFormatter()
-        return formatter.shortWeekdaySymbols[self.weekday()-1] as String
+        return formatter.shortWeekdaySymbols[self.weekday()-1] as! String
     }
 
     func veryShortWeekdayToString() -> String {
         let formatter = NSDateFormatter()
-        return formatter.veryShortWeekdaySymbols[self.weekday()-1] as String
+        return formatter.veryShortWeekdaySymbols[self.weekday()-1] as! String
     }
 
     func monthToString() -> String {
         let formatter = NSDateFormatter()
-        return formatter.monthSymbols[self.month()-1] as String
+        return formatter.monthSymbols[self.month()-1] as! String
     }
 
     func shortMonthToString() -> String {
         let formatter = NSDateFormatter()
-        return formatter.shortMonthSymbols[self.month()-1] as String
+        return formatter.shortMonthSymbols[self.month()-1] as! String
     }
 
     func veryShortMonthToString() -> String {
         let formatter = NSDateFormatter()
-        return formatter.veryShortMonthSymbols[self.month()-1] as String
+        return formatter.veryShortMonthSymbols[self.month()-1] as! String
     }
 
 
